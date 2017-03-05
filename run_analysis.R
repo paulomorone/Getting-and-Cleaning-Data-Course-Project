@@ -14,7 +14,7 @@ if(!file.exists(dest)){dir.create(dest)}
 
 unzip(zipfile = destzip, exdir = dest)
 
-# 2. Step - Read the data and rename the column names
+# 2. Step - Load necessary data and rename the column names
 # Feature file:
 features <- read.table('./data/CourseProject/UCI HAR Dataset/features.txt')
 
@@ -38,7 +38,7 @@ colnames(x_test) <- features[,2]
 colnames(y_test) <- "activityId"
 colnames(subject_test) <- "subjectId"
 
-# 3. Step - Merge the data to create one data set
+# 3. Step - Merge the data to create one dataset
 train <- cbind(y_train, subject_train, x_train)
 test <- cbind(y_test, subject_test, x_test)
 mrg_data <- rbind(train, test)
@@ -55,15 +55,15 @@ mean_and_std <- (grepl("activityId" , Names) |
 
 setForMeanAndStd <- mrg_data[ , mean_and_std == TRUE]
 
-# 5. Step - Descriptive activity names to name the activities in the data set
+# 5. Step - Descriptive activity names to name the activities in the dataset
 
 setWithActivityNames <- merge(setForMeanAndStd, activity,
                               by='activityId',
                               all.x=TRUE)
 
-# 6. Step - Second data set
+# 6. Step - Second dataset
 
 secdata <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
 secdata <- secdata[order(secdata$subjectId, secdata$activityId),]
-write.table(secdata, "secdata.txt", row.name=FALSE)
+write.table(secdata, "TIDY.txt", row.name=FALSE)
 
